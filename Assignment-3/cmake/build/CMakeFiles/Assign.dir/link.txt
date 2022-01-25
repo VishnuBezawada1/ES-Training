@@ -1,0 +1,1 @@
+/usr/bin/cc    CMakeFiles/Assign.dir/Assignment-1.c.o  -o Assign 
