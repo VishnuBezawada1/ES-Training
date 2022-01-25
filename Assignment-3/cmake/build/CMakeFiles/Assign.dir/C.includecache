@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/rently/Documents/ES-Training/Assignment-3/cmake/Assignment-1.c
+stdio.h
+-
+stdlib.h
+-
+stdbool.h
+-
+
