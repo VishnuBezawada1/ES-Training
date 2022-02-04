@@ -1,0 +1,49 @@
+Embedded Boot sequence:
+
+When the device is power-on or reset, The first piece of code is executed when boots up, which is know as BootROM.
+
+BootROM:
+----------
+- The BootROM is the very first piece of instruction to be executed when a device boots up Or when a system undergoes hard reset (may be due to  hardware reset/software reset/ power-on reset).the control lands up here, in the BootROM.
+- its PC register pointer points to the beginning of a ROM embedded in the IC
+- BootRom is non-modifiable(read only) area of memory which is written once during manufacturing.
+- Being the very first piece of software to run, the BootROM performs certain basic functionalities like initializing the RAM, setting up the hardware PLL, RC oscillators, clocks,checks the authenticity of the next stage bootloader by validating its RSA signatures etc. The quintessential task of the BootROM is to load the next stage software into the RAM (done by pointing the PC to this new address).
+- This software is usually an early stage bootloader that is picked up from the flash memory. we can say this as first stage of bootloader.
+- The simplest type of boot ROM may just look for a fixed size code block from external memory. This fixed size block almost always serves as a 2nd stage loader.
+
+--------------
+After this the pre-boot env & fetching the u-boot will happen.
+The address of the u-boot will be depends on the SoC(system on chip). It is usually documented in the SoC's reference manual, and it does describe the various conventions (where to read u-boot from, specific addresses) the u-boot port specific to this SoC should follow in order to the code in ROM to be able to load u-boot, and ultimately transfer control to u-boot.
+
+after validating the pre-boot env if it is correct it starts u-boot otherwise abort.
+------------
+
+U-Boot:
+----------
+- The Boot Loader used to put the hardware into a state suitable to boot an operating system, load the OS into memory, and start the OS booting.
+- Initialize hardware components used in this stage,Check memory map,set parameters.
+- u-boot is a program that copies the binary data bit’s (0’s & 1’s) from Non-volatile memory (Ex: Flash memory) into volatile memory (RAM) and then transfers the CPU control to the newly loaded binary data bit’s (executable) like kernel.
+- Booting the kernel requires a valid kernel image (uImage) and a target file system as per the processor hardware family architecture design.
+- we should tell the U-Boot where the kernel located and how should U-Boot load the kernel into the memory. It can be on the network, uSD card, NAND Flash, NOR Flash or another place.
+- u-boot load the kernel and file system into the RAM.
+
+-------------
+Uboot generally passes boot parameters like what type of hardware is present, what memory to use for something, or which type of mode to use for a specific driver.
+so, the kernel will re-initialize the hardware.
+and checks for the  validating of kernel if it is correct it starts kernel otherwise aborted.
+--------------
+
+kernel:
+----------
+- It is responsible for the process, memory, device driver, file and network system of the management system. It determines the performance and stability of the system.
+- “Kernel” refers to a system software that provides hardware abstraction layer, disk and file system control, multitasking and other functions.
+- A kernel is not a complete operating system.
+- The kernel will load kernel modules first, then detect hardware (floppy drive, hard disk, network adapters, etc.), verify hardware configuration, and then scan and load device drivers. At this stage, the kernel will mount the root file system.
+------------
+
+rootfs:
+-----------
+- The rootfs is the essential filesystem for the system (initially a ramfs or tmpfs) , but more often is used to refer to a collection of files in a filesystem of some type (e.g. ramfs, ext2/3/4, jffs2, ubifs) that consist of essential initialization and userspace programs.
+- This file system not only has the function of storing data files in ordinary file system, but also has the special feature of mount when the kernel starts.
+- Root file system includes directories and key files necessary for Linux boot, such as init files when Linux boots.
+- so, the init files will start and process the system.
