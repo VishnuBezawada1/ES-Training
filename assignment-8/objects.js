@@ -1,3 +1,11 @@
+//5. Write a function that takes object as input and prints all keys and values in a valid JSON format
+
+//input:
+//displayJSON("BMW","x5","2022","petrol")
+
+//output:
+//{"brand":"BMW","model":"x5","year":"2022","fuelType":"petrol"}
+
 function car(brand,model,year,fuelType) {
     this.brand = brand;
     this.model = model;
